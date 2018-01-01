@@ -1,6 +1,6 @@
-var arr = [ 5, 1, 1, 2, 1 ];
+var array = [ 5, 1, 1, 2, 1 ];
 
-function bubbleSort() {
+function bubbleSort(arr) {
   for(var i =0; i< arr.length -1; i++) {
     for(var j = i+1; j < arr.length; j++) {
       if(arr[i] > arr[j]) {
@@ -13,4 +13,4 @@ function bubbleSort() {
   console.log(arr);
 }
 
-bubbleSort();
+bubbleSort(array);
