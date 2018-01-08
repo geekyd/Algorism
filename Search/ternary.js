@@ -1,7 +1,7 @@
 function ternarySearch(arr, l, r, x) {
   if (r >= l) {
-      var mid1 = l + (r - l)/3;
-      var mid2 = r - 1 - (r - l)/3;
+      var mid1 = l + parseInt((r - l)/3);
+      var mid2 = mid1 + parseInt((r - l)/3);
 
       if (arr[mid1] == x) return mid1;
       if (arr[mid2] == x) return mid2;
