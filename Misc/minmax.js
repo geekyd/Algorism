@@ -46,38 +46,47 @@ function checkWinner(board, turn) {
         else return -1;
     }
 
-    if (turn == 9) return 0; // Game result is a draw
-
-    else return -100; // this means the game is still going on
+    return 0; // Game result is a draw
 }
 
 function generateBoard(turn, board) {
-    let player = turn%2 == 0 ? 1 : 2;
+    let player = turn%2 == 1 ? 1 : 2;
+    test ++;
 
-    if (turn == 9) return checkWinner(board.board, player);
+    if (turn == 9) {
+      board.score = checkWinner(board.board, player);
+      return;  
+    }
 
-    let result = checkWinner(board.board, player == 1? 2: 1);
+    let result = checkWinner(board.board, player);
 
-    if (turn !=0 && result !== -100) {
+    if (result === -1 || result === 1) {
         board.score = result;
         return;
     }
     
-    let currentBoard = JSON.parse( JSON.stringify( board ) );
     board.childList = [];
     for (let i =0; i<3 ; i++) {
         for (let j =0; j<3; j++) {
-            if (currentBoard.board[i][j] === -1) {
-                currentBoard.board[i][j] = player;
+            let thisBoard = JSON.parse( JSON.stringify( board ) );
+            if (thisBoard.board[i][j] === -1) {
+                thisBoard.board[i][j] = player;
                 let child = new childBoard();
-                child.board = JSON.parse( JSON.stringify( currentBoard ) ).board;
-                generateBoard(turn+1, child);
+                child.board = JSON.parse( JSON.stringify( thisBoard ) ).board;
+                child.score = 0;
+                generateBoard(turn + 1, child);
                 board.childList.push(child)
             }
         }
     }
-    console.log(board)
-    test ++;
+
+    let values = board.childList.map((b) => { if(isNaN(b.score)) {return 0 } else return b.score });
+
+    if(player === 1) { // max
+        board.score = Math.max(...values)
+    } else { // min
+        board.score = Math.min(...values)
+    }
 }
 
 // player 1 is 0 & player 2 is 1
@@ -85,6 +94,7 @@ function generateAll() {
     let parentBoard = Object.assign({board: [ [-1,-1,-1], [-1,-1,-1], [-1,-1,-1] ], childList: []}, childBoard);
     generateBoard(1, parentBoard);
     console.log(test)
+    console.log(parentBoard)
 }
 
 function game() {
