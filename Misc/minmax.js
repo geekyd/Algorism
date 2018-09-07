@@ -4,11 +4,6 @@ let allBoards = null;
 let currentBoard = null;
 let test = 0;
 
-// Checks the state of the game if the current user wins then 1 draw 0 & loss is -1
-function checkResult() {
-
-}
-
 function childBoard (board) {
     this.board = board
     this.parent = null
@@ -81,12 +76,7 @@ function generateBoard(turn, board) {
     }
 
     let values = board.childList.map((b) => { if(isNaN(b.score)) {return 0 } else return b.score });
-
-    if(player === 1) { // max
-        board.score = Math.max(...values)
-    } else { // min
-        board.score = Math.min(...values)
-    }
+    board.score = values.reduce((a, b) => { return a+b })
 }
 
 // player 1 is 0 & player 2 is 1
